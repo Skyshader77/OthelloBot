@@ -4,5 +4,5 @@ using namespace std;
 struct piecePosition{           
   int xCoord;        
   int yCoord;
-  string color;       
+  int ncolor;       
 };
