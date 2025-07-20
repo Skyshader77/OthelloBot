@@ -1,5 +1,7 @@
+#ifndef BITCOUNTER_H
+#define BITCOUNTER_H
+
 #include <cstdint>
-#include <PiecePosition.h>
 
 class BitCounter
 {
@@ -9,3 +11,5 @@ public:
 private:
     int BitsSetTable256[256];
 };
+
+#endif

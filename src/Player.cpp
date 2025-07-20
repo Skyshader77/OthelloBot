@@ -1,8 +1,6 @@
 #include "Player.h"
-#include "Constants.h"
 #include <iostream>
 using namespace std;
-#include <iostream>
 #include <vector>
 
 piecePosition Player::insertPiece(){
@@ -17,8 +15,8 @@ piecePosition Player::insertPiece(){
     
     newPiece.ncolor = myColor;
     
-    cout << "Piece placed at (" << newPiece.xCoord << ", " << newPiece.yCoord 
-         << ") with color " << newPiece.ncolor << endl;
+    cout << "Player wants piece to be placed at (" << newPiece.xCoord << ", " << newPiece.yCoord 
+         << ") with color " << newPiece.ncolor << ". System will now check if placement is valid" << endl;
     
     return newPiece;
 }

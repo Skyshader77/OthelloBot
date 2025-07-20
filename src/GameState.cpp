@@ -1,5 +1,4 @@
 #include "GameState.h"
-#include "Constants.h"
 #include <iostream>
 using namespace std;
 #include <iostream>
@@ -19,12 +18,13 @@ void GameState::runGame(){
     piecePosition newPiecePosition;
     while (!isGameOver()){
         for (auto & player:players){
+            board.printBoard();
             newPiecePosition=player.pickAction();
             while (board.isInValidPosition(newPiecePosition)){
+                cout<< "You have entered an invalid position.";
                 newPiecePosition=player.insertPiece();
             }
             board.updateBoard(newPiecePosition);
-            board.printBoard();
         }
     }
     printWinner();

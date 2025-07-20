@@ -1,3 +1,6 @@
+#ifndef PIECEPOSITION_H
+#define PIECEPOSITION_H
+
 using namespace std;
 #include <string>
 
@@ -6,3 +9,5 @@ struct piecePosition{
   int yCoord;
   int ncolor;       
 };
+
+#endif

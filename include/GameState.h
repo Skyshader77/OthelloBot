@@ -1,3 +1,7 @@
+#ifndef GAMESTATE_H
+#define GAMESTATE_H
+
+
 #include <string>
 using namespace std;
 #include <PiecePosition.h>
@@ -17,3 +21,5 @@ class GameState {
     Board board;
     BitCounter bitcounter;  
 };
+
+#endif

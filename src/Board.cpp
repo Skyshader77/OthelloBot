@@ -32,13 +32,16 @@ bool Board::isOutOfRange(piecePosition pos) {
        pos.yCoord < 0 || pos.yCoord > (BOARD_SIZE-1)) {
         return true;
     }
+    return false;
 }
 
 void Board::updateBoard(piecePosition newPiecePosition) {
     if (isInValidPosition(newPiecePosition)) {
         return; 
     }
-    
+
+    pieceBB[newPiecePosition.ncolor] |= (1ULL << (newPiecePosition.yCoord * BOARD_SIZE + newPiecePosition.xCoord)); 
+
     vector<pair<int, int>> capturedPieces;
     
     for (int(&direction)[2] : DIRECTIONS) {
@@ -77,11 +80,13 @@ void Board::updateBoard(piecePosition newPiecePosition) {
         }
         
     }
+
+    cout << "Piece placed at (" << newPiecePosition.xCoord << ", " << newPiecePosition.yCoord 
+         << ") with color " << newPiecePosition.ncolor << endl;
     
 }
 
 bool Board::isInValidPosition(piecePosition pos){
-    cout<< "You have entered an invalid position.";
     return isOutOfRange(pos) || isSquareOccupied(pos);
 }
 

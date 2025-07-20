@@ -1,3 +1,6 @@
+#ifndef BOARD_H
+#define BOARD_H
+
 #include <cstdint>
 #include <PiecePosition.h>
 
@@ -9,6 +12,7 @@ public:
       nWhite,
       nBlack,  
    };
+   Board();
    uint64_t getBoard() const;
    uint64_t getWhitePieces() const {return  pieceBB[nWhite];}
    uint64_t getBlackPieces() const {return  pieceBB[nBlack];}
@@ -24,3 +28,5 @@ public:
 private:
    uint64_t pieceBB[8];
 };
+
+#endif
