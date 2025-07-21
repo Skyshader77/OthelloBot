@@ -1,3 +1,3 @@
-build/src/GameState.o: src/GameState.cpp include/GameState.h \
+build/src/alpha-beta.o: src/alpha-beta.cpp include/GameState.h \
  include/PiecePosition.h include/Player.h include/Board.h \
  include/Constants.h include/BitCounter.h

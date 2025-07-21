@@ -21,6 +21,10 @@ piecePosition Player::insertPiece(){
     return newPiece;
 }
 
+int Player::getColor(){
+    return myColor;
+}
+
 void Player::leaveGame(){
     char confirm;
     cout << "Are you sure you want to leave the game? (y/n): ";

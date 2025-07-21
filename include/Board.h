@@ -3,15 +3,10 @@
 
 #include <cstdint>
 #include <PiecePosition.h>
-
+#include <Constants.h>
 class Board
 {
 public:
-   enum enumPiece
-   {
-      nWhite,
-      nBlack,  
-   };
    Board();
    uint64_t getBoard() const;
    uint64_t getWhitePieces() const {return  pieceBB[nWhite];}

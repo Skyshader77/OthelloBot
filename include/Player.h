@@ -11,6 +11,7 @@ public:
     piecePosition pickAction();
     piecePosition insertPiece(); 
     void leaveGame();
+    int getColor();
 private:
     int myColor;
 };

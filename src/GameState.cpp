@@ -9,31 +9,47 @@ GameState::GameState() : players{Player(0), Player(1)}, board(), bitcounter()
     bitcounter.initialize();
 }
 
+shared_ptr<Board> GameState::getBoard() const{
+    return board;
+}
+
 bool GameState::isGameOver() const{
-    return board.isFull();
+    return board->isFull();
+}
+
+int GameState::getCurrentPlayer() const{
+    return currentPlayer;
 }
 
 void GameState::runGame(){
-    board.resetBoard();
+    board->resetBoard();
     piecePosition newPiecePosition;
     while (!isGameOver()){
         for (auto & player:players){
-            board.printBoard();
+            currentPlayer=player.getColor();
+            board->printBoard();
             newPiecePosition=player.pickAction();
-            while (board.isInValidPosition(newPiecePosition)){
-                cout<< "You have entered an invalid position.";
+            while (board->isInValidPosition(newPiecePosition)){
+                cout<< "You have entered an invalid position." <<endl;
                 newPiecePosition=player.insertPiece();
             }
-            board.updateBoard(newPiecePosition);
+            board->updateBoard(newPiecePosition);
         }
     }
     printWinner();
 }
 
+int GameState::getNumbBlackPieces() const{
+    return bitcounter.countSetBits(board->getBlackPieces());
+}
+
+int GameState::getNumbWhitePieces() const{
+    return bitcounter.countSetBits(board->getWhitePieces());
+}
 
 bool GameState::printWinner() const{
-    int numbBlackPieces= bitcounter.countSetBits(board.getBlackPieces());
-    int numbWhitePieces= bitcounter.countSetBits(board.getBlackPieces());
+    int numbBlackPieces= bitcounter.countSetBits(board->getBlackPieces());
+    int numbWhitePieces= bitcounter.countSetBits(board->getBlackPieces());
 
     if (numbWhitePieces> numbBlackPieces){
         cout<< "White wins";
