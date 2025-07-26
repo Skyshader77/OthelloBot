@@ -10,7 +10,10 @@ INCLUDE := -Iinclude/
 SRC := $(wildcard src/*.cpp)
 TEST_SRC := src/Unittests.cpp
 OBJECTS := $(SRC:%.cpp=$(OBJ_DIR)/%.o)
-TEST_OBJECTS := $(filter-out $(OBJ_DIR)/src/mainTests.o, $(OBJECTS))
+# For main target: exclude Unittests.o (contains mainTests, not main)
+MAIN_OBJECTS := $(filter-out $(OBJ_DIR)/src/Unittests.o, $(OBJECTS))
+# For test target: exclude main.o if it exists, include Unittests.o
+TEST_OBJECTS := $(filter-out $(OBJ_DIR)/src/main.o, $(OBJECTS))
 DEPENDENCIES := $(OBJECTS:.o=.d)
 TEST_DEPENDENCIES := $(TEST_OBJECTS:.o=.d)
 
@@ -20,7 +23,7 @@ $(OBJ_DIR)/%.o: %.cpp
 	@mkdir -p $(@D)
 	$(CXX) $(CXXFLAGS) $(INCLUDE) -c $< -MMD -o $@
 
-$(TARGET): $(OBJECTS)
+$(TARGET): $(MAIN_OBJECTS)
 	@mkdir -p $(@D)
 	$(CXX) $(CXXFLAGS) -o $(TARGET) $^ $(LDFLAGS)
 

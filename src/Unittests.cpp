@@ -11,12 +11,13 @@
 
 using namespace std;
 
-int mainTests()
+int main()
 {
     TestSuite testSuite;
 
     testSuite.require("Board initialization", 1.0, [](){
         Board board;
+        board.resetBoard();
         uint64_t allPieces = board.getAllPieces();
         
         // Check that exactly 4 pieces are placed initially
@@ -38,6 +39,7 @@ int mainTests()
 
     testSuite.require("Board reset functionality", 0.5, [](){
         Board board;
+        board.resetBoard();
         // Add a piece to modify the board
         piecePosition newPos = {2, 3, nBlack};
         board.updateBoard(newPos);
@@ -58,6 +60,7 @@ int mainTests()
 
     testSuite.require("Out of range detection", 0.5, [](){
         Board board;
+        board.resetBoard();
         
         // Test positions outside board boundaries
         piecePosition outOfRange1 = {-1, 0, nWhite};
@@ -75,7 +78,8 @@ int mainTests()
 
     testSuite.require("Square occupation detection", 0.5, [](){
         Board board;
-        
+        board.resetBoard();
+
         // Test initial occupied positions
         piecePosition d4 = {3, 3, nWhite};
         piecePosition e4 = {4, 3, nBlack};
@@ -88,7 +92,8 @@ int mainTests()
 
     testSuite.require("Ally detection", 0.5, [](){
         Board board;
-        
+        board.resetBoard();
+
         piecePosition d4 = {3, 3, nWhite}; // White piece
         piecePosition e4 = {4, 3, nBlack}; // Black piece
         piecePosition empty = {0, 0, nWhite}; // Empty square
@@ -102,7 +107,8 @@ int mainTests()
 
     testSuite.require("Invalid position detection", 0.5, [](){
         Board board;
-        
+        board.resetBoard();
+
         piecePosition outOfRange = {-1, 0, nWhite};
         piecePosition occupied = {3, 3, nWhite}; // D4 is initially occupied
         piecePosition valid = {0, 0, nWhite}; // Empty and in range
@@ -114,12 +120,13 @@ int mainTests()
 
     testSuite.require("Board not full initially", 0.5, [](){
         Board board;
+        board.resetBoard();
         assert(!board.isFull(), "Error: board should not be full at start");
     });
 
     testSuite.require("Valid move with captures", 1.5, [](){
         Board board;
-        
+        board.resetBoard();
         // Initial setup has:
         // D4(White), E4(Black), D5(Black), E5(White)
         // Valid move for Black: C4 should capture D4
@@ -147,7 +154,7 @@ int mainTests()
 
     testSuite.require("Invalid move attempt", 0.5, [](){
         Board board;
-        
+        board.resetBoard();
         // Try to place a piece on an already occupied square
         piecePosition occupied = {3, 3, nBlack}; // D4 is occupied by white
         
@@ -164,7 +171,8 @@ int mainTests()
 
     testSuite.require("Move without captures", 0.5, [](){
         Board board;
-        
+        board.resetBoard();
+
         // Try a move that doesn't capture anything (should still place the piece if valid)
         // This test assumes that isolated moves are allowed in your implementation
         piecePosition isolated = {0, 0, nWhite};
@@ -183,7 +191,7 @@ int mainTests()
 
     testSuite.require("Multiple direction captures", 1.0, [](){
         Board board;
-        
+        board.resetBoard();
         // Set up a scenario where a move captures in multiple directions
         // This might require manually setting up the board state
         
@@ -200,7 +208,7 @@ int mainTests()
 
     testSuite.require("Board display format", 1.0, [](){
         Board board;
-        
+        board.resetBoard();
         // Capture output from printBoard
         ostringstream oss;
         streambuf* oldCout = cout.rdbuf(oss.rdbuf());
@@ -223,7 +231,7 @@ int mainTests()
 
     testSuite.require("Edge case: Corner moves", 0.5, [](){
         Board board;
-        
+        board.resetBoard();
         // Test moves in corners
         piecePosition corner1 = {0, 0, nWhite};
         piecePosition corner2 = {BOARD_SIZE-1, BOARD_SIZE-1, nBlack};
@@ -238,6 +246,113 @@ int mainTests()
         // Verify the board state remains consistent
         uint64_t allPieces = board.getAllPieces();
         assert(__builtin_popcountll(allPieces) >= 4, "Error: board should have at least 4 pieces");
+    });
+
+    testSuite.require("getEmptySpaces - Initial board state", 1.0, [](){
+        Board board;
+        board.resetBoard();
+
+        vector<piecePosition> emptySpaces = board.getEmptySpaces();
+        
+        // Initial board has 4 pieces, so should have 64 - 4 = 60 empty spaces
+        assert(emptySpaces.size() == 60, "Error: initial board should have 60 empty spaces");
+        
+        // Verify that all returned positions have ncolor = -1
+        for(const auto& pos : emptySpaces) {
+            assert(pos.ncolor == -1, "Error: empty spaces should have ncolor = -1");
+        }
+        
+        // Verify that initially occupied positions are NOT in the empty spaces list
+        // D4(3,3), E4(4,3), D5(3,4), E5(4,4) should not be in empty spaces
+        bool foundD4 = false, foundE4 = false, foundD5 = false, foundE5 = false;
+        for(const auto& pos : emptySpaces) {
+            if(pos.xCoord == 3 && pos.yCoord == 3) foundD4 = true;
+            if(pos.xCoord == 4 && pos.yCoord == 3) foundE4 = true;
+            if(pos.xCoord == 3 && pos.yCoord == 4) foundD5 = true;
+            if(pos.xCoord == 4 && pos.yCoord == 4) foundE5 = true;
+        }
+        assert(!foundD4, "Error: D4 should not be in empty spaces (occupied by white)");
+        assert(!foundE4, "Error: E4 should not be in empty spaces (occupied by black)");
+        assert(!foundD5, "Error: D5 should not be in empty spaces (occupied by black)");
+        assert(!foundE5, "Error: E5 should not be in empty spaces (occupied by white)");
+    });
+
+    testSuite.require("getEmptySpaces - Corner positions included", 0.5, [](){
+        Board board;
+        board.resetBoard();
+
+        vector<piecePosition> emptySpaces = board.getEmptySpaces();
+        
+        // Check that all four corners are initially empty
+        bool foundTopLeft = false, foundTopRight = false;
+        bool foundBottomLeft = false, foundBottomRight = false;
+        
+        for(const auto& pos : emptySpaces) {
+            if(pos.xCoord == 0 && pos.yCoord == 0) foundTopLeft = true;
+            if(pos.xCoord == BOARD_SIZE-1 && pos.yCoord == 0) foundTopRight = true;
+            if(pos.xCoord == 0 && pos.yCoord == BOARD_SIZE-1) foundBottomLeft = true;
+            if(pos.xCoord == BOARD_SIZE-1 && pos.yCoord == BOARD_SIZE-1) foundBottomRight = true;
+        }
+        
+        assert(foundTopLeft, "Error: top-left corner should be empty initially");
+        assert(foundTopRight, "Error: top-right corner should be empty initially");
+        assert(foundBottomLeft, "Error: bottom-left corner should be empty initially");
+        assert(foundBottomRight, "Error: bottom-right corner should be empty initially");
+    });
+
+    testSuite.require("getEmptySpaces - After placing pieces", 1.0, [](){
+        Board board;
+        board.resetBoard();
+
+        // Place a piece (assuming C4 is a valid move)
+        piecePosition c4 = {2, 3, nBlack};
+        board.updateBoard(c4);
+        
+        vector<piecePosition> emptySpaces = board.getEmptySpaces();
+        
+        // Should have one less empty space now
+        assert(emptySpaces.size() < 60, "Error: placing a piece should reduce empty spaces");
+        
+        // C4 should not be in the empty spaces list
+        bool foundC4 = false;
+        for(const auto& pos : emptySpaces) {
+            if(pos.xCoord == 2 && pos.yCoord == 3) {
+                foundC4 = true;
+                break;
+            }
+        }
+        assert(!foundC4, "Error: C4 should not be in empty spaces after placing piece there");
+    });
+
+    testSuite.require("getEmptySpaces - Coordinate bounds checking", 0.5, [](){
+        Board board;
+        board.resetBoard();
+
+        vector<piecePosition> emptySpaces = board.getEmptySpaces();
+        
+        // Verify all coordinates are within valid bounds
+        for(const auto& pos : emptySpaces) {
+            assert(pos.xCoord >= 0, "Error: x coordinate should be >= 0");
+            assert(pos.xCoord < BOARD_SIZE, "Error: x coordinate should be < BOARD_SIZE");
+            assert(pos.yCoord >= 0, "Error: y coordinate should be >= 0");
+            assert(pos.yCoord < BOARD_SIZE, "Error: y coordinate should be < BOARD_SIZE");
+        }
+    });
+
+    testSuite.require("getEmptySpaces - No duplicates", 0.5, [](){
+        Board board;
+        board.resetBoard();
+
+        vector<piecePosition> emptySpaces = board.getEmptySpaces();
+        
+        // Check for duplicate positions
+        for(size_t i = 0; i < emptySpaces.size(); i++) {
+            for(size_t j = i + 1; j < emptySpaces.size(); j++) {
+                bool isDuplicate = (emptySpaces[i].xCoord == emptySpaces[j].xCoord) &&
+                                (emptySpaces[i].yCoord == emptySpaces[j].yCoord);
+                assert(!isDuplicate, "Error: empty spaces list should not contain duplicates");
+            }
+        }
     });
 
      testSuite.require("BitCounter initialization", 1.0, [](){
