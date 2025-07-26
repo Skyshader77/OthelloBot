@@ -27,8 +27,8 @@ uint64_t Board::getAllPieces() const {
 }
 
 bool Board::isOutOfRange(piecePosition pos) {
-   if(pos.xCoord < 0 || pos.xCoord > (BOARD_SIZE-1) || 
-       pos.yCoord < 0 || pos.yCoord > (BOARD_SIZE-1)) {
+    if(pos.xCoord < 0 || pos.xCoord >= BOARD_SIZE ||
+       pos.yCoord < 0 || pos.yCoord >= BOARD_SIZE) {
         return true;
     }
     return false;
@@ -58,53 +58,53 @@ vector<piecePosition> Board::getEmptySpaces() const {
 
 void Board::updateBoard(piecePosition newPiecePosition) {
     if (isInValidPosition(newPiecePosition)) {
-        return; 
+        return;
     }
-
-    pieceBB[newPiecePosition.ncolor] |= (1ULL << (newPiecePosition.yCoord * BOARD_SIZE + newPiecePosition.xCoord)); 
+    
+    if (newPiecePosition.ncolor < 0 || newPiecePosition.ncolor > 1) {
+        cout << "ERROR: Invalid color " << newPiecePosition.ncolor << endl;
+        return;
+    }
+    
+    int square = newPiecePosition.yCoord * BOARD_SIZE + newPiecePosition.xCoord;
+    if (square < 0 || square >= 64) {  // assuming 8x8 board
+        cout << "ERROR: Invalid square " << square << endl;
+        return;
+    }
+    
+    pieceBB[newPiecePosition.ncolor] |= (1ULL << square);
 
     vector<pair<int, int>> capturedPieces;
-    
+
     for (int(&direction)[2] : DIRECTIONS) {
         vector<pair<int, int>> lookedPieces;
         piecePosition searchedPosition = newPiecePosition;
-        
         searchedPosition.xCoord += direction[0];
         searchedPosition.yCoord += direction[1];
         
-        while (!isOutOfRange(searchedPosition) && 
-               isSquareOccupied(searchedPosition) && 
+        while (!isOutOfRange(searchedPosition) &&
+               isSquareOccupied(searchedPosition) &&
                !hasAlly(searchedPosition, newPiecePosition.ncolor)) {
-            
             lookedPieces.push_back(make_pair(searchedPosition.xCoord, searchedPosition.yCoord));
             searchedPosition.xCoord += direction[0];
             searchedPosition.yCoord += direction[1];
         }
-        
-        if (!isOutOfRange(searchedPosition) && 
-            hasAlly(searchedPosition, newPiecePosition.ncolor) && 
+        if (!isOutOfRange(searchedPosition) &&
+            hasAlly(searchedPosition, newPiecePosition.ncolor) &&
             !lookedPieces.empty()) {
             capturedPieces.insert(capturedPieces.end(), lookedPieces.begin(), lookedPieces.end());
         }
     }
-    
     if (!capturedPieces.empty()) {
-        int newSquare = newPiecePosition.yCoord * BOARD_SIZE + newPiecePosition.xCoord;
-        pieceBB[newPiecePosition.ncolor] |= (1ULL << newSquare);
-        
         for (const pair<int, int>& piece : capturedPieces) {
-            int square = piece.second * BOARD_SIZE + piece.first;
-            uint64_t pieceMask = 1ULL << square;
-            
-            pieceBB[1 - newPiecePosition.ncolor] &= ~pieceMask;
-            pieceBB[newPiecePosition.ncolor] |= pieceMask;
+            int captureSquare = piece.second * BOARD_SIZE + piece.first;
+            if (captureSquare >= 0 && captureSquare < 64) {
+                uint64_t pieceMask = 1ULL << captureSquare;
+                pieceBB[1 - newPiecePosition.ncolor] &= ~pieceMask;
+                pieceBB[newPiecePosition.ncolor] |= pieceMask;
+            }
         }
-        
     }
-
-    cout << "Piece placed at (" << newPiecePosition.xCoord << ", " << newPiecePosition.yCoord 
-         << ") with color " << newPiecePosition.ncolor << endl;
-    
 }
 
 bool Board::isInValidPosition(piecePosition pos){
@@ -112,6 +112,9 @@ bool Board::isInValidPosition(piecePosition pos){
 }
 
 bool Board::isSquareOccupied(piecePosition pos) {
+    if (isOutOfRange(pos)){
+        return false;
+    }
     int square = pos.yCoord * BOARD_SIZE + pos.xCoord;
     uint64_t squareMask = 1ULL << square;
     
@@ -119,6 +122,9 @@ bool Board::isSquareOccupied(piecePosition pos) {
 }
 
 bool Board::hasAlly(piecePosition pos, int ncolor) {
+    if (isOutOfRange(pos)){
+        return false;
+    }
     int square = pos.yCoord * BOARD_SIZE + pos.xCoord;
     uint64_t squareMask = 1ULL << square;
     

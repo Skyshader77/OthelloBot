@@ -9,7 +9,6 @@ class Board
 {
 public:
    Board();
-   uint64_t getBoard() const;
    uint64_t getWhitePieces() const {return  pieceBB[nWhite];}
    uint64_t getBlackPieces() const {return  pieceBB[nBlack];}
    uint64_t getAllPieces() const;

@@ -17,7 +17,7 @@ int compute_heuristic(GameState* gameState){
     numbWhitePieces=gameState->getNumbWhitePieces();
     numbBlackPieces=gameState->getNumbBlackPieces();
 
-    if (gameState->getCurrentPlayer()){
+    if (gameState->getCurrentPlayer()==nWhite){
         heuristicScore=numbWhitePieces+numbWhitePieces-numbBlackPieces;
     } else{
         heuristicScore=numbBlackPieces+numbBlackPieces-numbWhitePieces;
@@ -99,6 +99,7 @@ MinimaxResult minimax(int depth, bool maximizingPlayer, int alpha, int beta, Gam
         finalResult.value = best;
         finalResult.bestMove = bestMove;
         finalResult.hasBestMove = foundMove;
+
         return finalResult;
     }
 }

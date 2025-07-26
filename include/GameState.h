@@ -19,13 +19,13 @@ class GameState {
     void initiateGame();
     void insertPiece(piecePosition newPiecePosition);
     bool isGameOver() const;
-    bool printWinner() const;
-    GameState deepCopy() const;
+    void printWinner() const;
+    GameState deepCopy();
     void changeCurrentPlayer();
     int getNumbBlackPieces() const;
     int getNumbWhitePieces() const;
     int getCurrentPlayer() const;
-    shared_ptr<Board> getBoard() const;
+    shared_ptr<Board> getBoard();
     void runGame();
   private:                   
     vector<shared_ptr<Player>> players;

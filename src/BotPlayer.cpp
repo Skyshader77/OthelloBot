@@ -6,6 +6,6 @@ using namespace std;
 #include "Constants.h"
 
 piecePosition BotPlayer::pickAction(GameState* gamestate){
-    MinimaxResult chosenMove=minimax(MAX_DEPTH, true, MAX, MIN, gamestate);
+    MinimaxResult chosenMove=minimax(0, true, MAX, MIN, gamestate);
     return chosenMove.bestMove;
 }

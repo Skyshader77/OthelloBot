@@ -12,7 +12,7 @@ GameState::GameState() : currentPlayer(0) {
     bitcounter.initialize();
 }
 
-shared_ptr<Board> GameState::getBoard() const{
+shared_ptr<Board> GameState::getBoard(){
     return board;
 }
 
@@ -44,7 +44,7 @@ void GameState::addHumanPlayer(){
     players.push_back(make_shared<HumanPlayer>(newColor));
 }
 
-GameState GameState::deepCopy() const {
+GameState GameState::deepCopy(){
     GameState copy;
     copy.currentPlayer = this->currentPlayer;
     
@@ -123,7 +123,6 @@ void GameState::runGame(){
     while (!isGameOver()){
         for (auto & player : players){
             currentPlayer = player->getColor();
-            
             if (dynamic_cast<HumanPlayer*>(player.get()) != nullptr){
                 board->printBoard();
                 HumanPlayer* humanPlayer= dynamic_cast<HumanPlayer*>(player.get());
@@ -147,6 +146,7 @@ void GameState::runGame(){
             }
 
             if (isGameOver()) {
+                board->printBoard();
                 break;
             }
         }
@@ -162,17 +162,21 @@ int GameState::getNumbWhitePieces() const{
     return bitcounter.countSetBits(board->getWhitePieces());
 }
 
-bool GameState::printWinner() const{
+void GameState::printWinner() const{
+    cout<<"printing winner"<<endl;
     int numbBlackPieces= bitcounter.countSetBits(board->getBlackPieces());
-    int numbWhitePieces= bitcounter.countSetBits(board->getBlackPieces());
+    int numbWhitePieces= bitcounter.countSetBits(board->getWhitePieces());
 
     if (numbWhitePieces> numbBlackPieces){
-        cout<< "White wins";
+         cout << "Condition 1: " << numbWhitePieces << " > " << numbBlackPieces << " = true" << endl;
+        cout<< "White wins"<<endl;
     }
     else if(numbBlackPieces > numbWhitePieces){
-        cout<< "Black wins";
+        cout << "Condition 2: " << numbBlackPieces << " > " << numbWhitePieces << " = true" << endl;
+        cout<< "Black wins"<<endl;
     }
     else{
-        cout<< "It is a tie!";
+        cout<< "It is a tie!"<<endl;
     }
+    cout << "Game over. Exiting..." << endl;
 }
