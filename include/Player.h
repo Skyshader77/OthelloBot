@@ -8,11 +8,9 @@ using namespace std;
 class Player {
 public:
     Player(int color) : myColor(color) {};
-    piecePosition pickAction();
-    piecePosition insertPiece(); 
-    void leaveGame();
-    int getColor();
-private:
+    virtual ~Player() = default;
+    int getColor() const { return myColor; }
+protected:
     int myColor;
 };
 

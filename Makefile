@@ -10,7 +10,7 @@ INCLUDE := -Iinclude/
 SRC := $(wildcard src/*.cpp)
 TEST_SRC := src/Unittests.cpp
 OBJECTS := $(SRC:%.cpp=$(OBJ_DIR)/%.o)
-TEST_OBJECTS := $(filter-out $(OBJ_DIR)/src/main.o, $(OBJECTS))
+TEST_OBJECTS := $(filter-out $(OBJ_DIR)/src/mainTests.o, $(OBJECTS))
 DEPENDENCIES := $(OBJECTS:.o=.d)
 TEST_DEPENDENCIES := $(TEST_OBJECTS:.o=.d)
 

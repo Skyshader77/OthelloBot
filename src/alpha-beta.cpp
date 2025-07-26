@@ -4,12 +4,8 @@
 #include<bits/stdc++.h>
 using namespace std;
 #include<GameState.h>
+#include<Alpha-beta.h>
 
-// Initial values of
-// Alpha and Beta
-const int MAX = 1000;
-const int MIN = -1000;
-const int MAX_DEPTH=10;
 // Returns optimal value for
 // current player(Initially called
 // for root and maximizer)
@@ -29,55 +25,80 @@ int compute_heuristic(GameState* gameState){
     return heuristicScore;
 }
 
-int minimax(int depth, int nodeIndex,
-            bool maximizingPlayer,
-            int values[], int alpha, 
-            int beta, GameState* gamestate)
-{
 
-    // Terminating condition. i.e 
-    // leaf node is reached
-    if (depth == MAX_DEPTH || gamestate->isGameOver())
-       
-        return values[nodeIndex]+compute_heuristic(gamestate);
-
-    if (maximizingPlayer)
-    {
-        int best = MIN;
-
-        // Recur for left and 
-        // right children
-        for (int i = 0; i < 2; i++)
-        {
-            
-            int val = minimax(depth + 1, nodeIndex * 2 + i, 
-                              false, values, alpha, beta, gamestate);
-            best = max(best, val);
-            alpha = max(alpha, best);
-
-            // Alpha Beta Pruning
-            if (beta <= alpha)
-                break;
-        }
-        return best;
+MinimaxResult minimax(int depth, bool maximizingPlayer, int alpha, int beta, GameState* gamestate) {
+    if (depth == MAX_DEPTH || gamestate->isGameOver()) {
+        MinimaxResult result;
+        result.value = compute_heuristic(gamestate);
+        result.hasBestMove = false;
+        return result;
     }
-    else
-    {
-        int best = MAX;
-
-        // Recur for left and
-        // right children
-        for (int i = 0; i < 2; i++)
-        {
-            int val = minimax(depth + 1, nodeIndex * 2 + i,
-                              true, values, alpha, beta, gamestate);
-            best = min(best, val);
-            beta = min(beta, best);
-
+    
+    vector<piecePosition> listPossibleMoves = gamestate->getBoard()->getEmptySpaces();
+    
+    if (maximizingPlayer) {
+        int best = MIN;
+        piecePosition bestMove;
+        bool foundMove = false;
+        
+        for (auto move = listPossibleMoves.begin(); move != listPossibleMoves.end(); ++move) {
+            piecePosition newmove = *move;
+            newmove.ncolor = gamestate->getCurrentPlayer();
+            GameState newGameState = gamestate->deepCopy();
+            newGameState.changeCurrentPlayer();
+            newGameState.getBoard()->updateBoard(newmove);
+            
+            MinimaxResult result = minimax(depth + 1, false, alpha, beta, &newGameState);
+            
+            if (result.value > best) {
+                best = result.value;
+                bestMove = newmove;
+                foundMove = true;
+            }
+            
+            alpha = max(alpha, best);
+            
             // Alpha Beta Pruning
             if (beta <= alpha)
                 break;
         }
-        return best;
+        
+        MinimaxResult finalResult;
+        finalResult.value = best;
+        finalResult.bestMove = bestMove;
+        finalResult.hasBestMove = foundMove;
+        return finalResult;
+    }
+    else {
+        int best = MAX;
+        piecePosition bestMove;
+        bool foundMove = false;
+        
+        for (auto move = listPossibleMoves.begin(); move != listPossibleMoves.end(); ++move) {
+            piecePosition newmove = *move;
+            newmove.ncolor = gamestate->getCurrentPlayer();
+            GameState newGameState = gamestate->deepCopy();
+            newGameState.changeCurrentPlayer();
+            newGameState.getBoard()->updateBoard(newmove);
+            
+            MinimaxResult result = minimax(depth + 1, true, alpha, beta, &newGameState);
+            
+            if (result.value < best) {
+                best = result.value;
+                bestMove = newmove;
+                foundMove = true;
+            }
+            
+            beta = min(beta, best);
+            
+            if (beta <= alpha)
+                break;
+        }
+        
+        MinimaxResult finalResult;
+        finalResult.value = best;
+        finalResult.bestMove = bestMove;
+        finalResult.hasBestMove = foundMove;
+        return finalResult;
     }
 }

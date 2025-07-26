@@ -1,9 +1,9 @@
-#include "Player.h"
+#include "HumanPlayer.h"
 #include <iostream>
 using namespace std;
 #include <vector>
 
-piecePosition Player::insertPiece(){
+piecePosition HumanPlayer::insertPiece(){
     piecePosition newPiece;
     
     cout << "Enter piece coordinates:" << endl;
@@ -21,11 +21,8 @@ piecePosition Player::insertPiece(){
     return newPiece;
 }
 
-int Player::getColor(){
-    return myColor;
-}
 
-void Player::leaveGame(){
+void HumanPlayer::leaveGame(){
     char confirm;
     cout << "Are you sure you want to leave the game? (y/n): ";
     cin >> confirm;
@@ -38,7 +35,7 @@ void Player::leaveGame(){
     }
 }
 
-piecePosition Player::pickAction(){
+piecePosition HumanPlayer::pickAction(){
     int choice;
     
     cout << "\n=== Player " << myColor << "'s Turn ===" << endl;

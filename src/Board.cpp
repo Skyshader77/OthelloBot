@@ -3,10 +3,9 @@
 #include <iostream>
 using namespace std;
 #include <iostream>
-#include <vector>
 
 Board::Board() {
-    resetBoard();
+
 }
 
 uint64_t Board::resetBoard() {
@@ -33,6 +32,28 @@ bool Board::isOutOfRange(piecePosition pos) {
         return true;
     }
     return false;
+}
+
+vector<piecePosition> Board::getEmptySpaces() const {
+    vector<piecePosition> emptySpaces;
+    uint64_t occupiedSquares = getAllPieces();
+    
+    for(int y = 0; y < BOARD_SIZE; y++) {
+        for(int x = 0; x < BOARD_SIZE; x++) {
+            int square = y * BOARD_SIZE + x;
+            uint64_t squareMask = 1ULL << square;
+            
+            if(!(occupiedSquares & squareMask)) {
+                piecePosition emptyPos;
+                emptyPos.xCoord = x;
+                emptyPos.yCoord = y;
+                emptyPos.ncolor = -1; // No color for empty spaces
+                emptySpaces.push_back(emptyPos);
+            }
+        }
+    }
+    
+    return emptySpaces;
 }
 
 void Board::updateBoard(piecePosition newPiecePosition) {

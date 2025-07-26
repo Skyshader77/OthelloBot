@@ -9,20 +9,26 @@ using namespace std;
 #include <Board.h>
 #include <BitCounter.h>
 #include <memory>
+#include <vector>
 
 class GameState {
   public:
     GameState();
+    void addHumanPlayer();
+    void addComputerPlayer();
+    void initiateGame();
     void insertPiece(piecePosition newPiecePosition);
     bool isGameOver() const;
     bool printWinner() const;
+    GameState deepCopy() const;
+    void changeCurrentPlayer();
     int getNumbBlackPieces() const;
     int getNumbWhitePieces() const;
     int getCurrentPlayer() const;
     shared_ptr<Board> getBoard() const;
     void runGame();
   private:                   
-    Player players[2];
+    vector<shared_ptr<Player>> players;
     shared_ptr<Board> board;
     BitCounter bitcounter;
     int currentPlayer;  

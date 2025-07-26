@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <PiecePosition.h>
 #include <Constants.h>
+#include <vector>
 class Board
 {
 public:
@@ -12,6 +13,7 @@ public:
    uint64_t getWhitePieces() const {return  pieceBB[nWhite];}
    uint64_t getBlackPieces() const {return  pieceBB[nBlack];}
    uint64_t getAllPieces() const;
+   vector<piecePosition> getEmptySpaces() const;
    bool isInValidPosition(piecePosition pos);
    bool isSquareOccupied(piecePosition newPiecePosition);
    bool isOutOfRange(piecePosition pos);
