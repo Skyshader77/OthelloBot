@@ -15,11 +15,12 @@ class GameState {
   public:
     GameState();
     void addHumanPlayer();
-    void addComputerPlayer();
+    void addComputerPlayer(enumDifficulty cpuDifficulty);
     void initiateGame();
     void insertPiece(piecePosition newPiecePosition);
     bool isGameOver() const;
     void printWinner() const;
+    enumDifficulty selectBotDifficulty();
     GameState deepCopy();
     void changeCurrentPlayer();
     int getNumbBlackPieces() const;

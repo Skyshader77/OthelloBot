@@ -22,6 +22,13 @@ enum enumPiece
     nBlack,
 };
 
+enum enumDifficulty
+{
+    easy,
+    medium,
+    hard,
+};
+
 // Constants for minimax algorithm
 
 

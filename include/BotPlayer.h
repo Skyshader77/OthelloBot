@@ -9,8 +9,10 @@ using namespace std;
 
 class BotPlayer: public Player  {
 public:
-    BotPlayer(int color) : Player(color) {};
+    BotPlayer(int color, enumDifficulty difficulty) : Player(color), level(difficulty) {};
     piecePosition pickAction(GameState* gamestate);
+private:
+    enumDifficulty level;
 };
 
 #endif

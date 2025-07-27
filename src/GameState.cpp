@@ -28,12 +28,12 @@ void GameState::changeCurrentPlayer() {
     currentPlayer=1-currentPlayer;
 }
 
-void GameState::addComputerPlayer(){
+void GameState::addComputerPlayer(enumDifficulty cpuDifficulty){
     int newColor=nBlack;
     if (!players.empty()) {
         newColor=nWhite;
     } 
-    players.push_back(make_shared<BotPlayer>(newColor));
+    players.push_back(make_shared<BotPlayer>(newColor, cpuDifficulty));
 }
 
 void GameState::addHumanPlayer(){
@@ -67,17 +67,14 @@ void GameState::initiateGame(){
     cout << "2. Human vs Bot" << endl;
     cout << "3. Bot vs Bot" << endl;
     cout << "Enter your choice (1-3): ";
-    
     int choice;
     cin >> choice;
-    
     while (choice < 1 || choice > 3) {
         cout << "Invalid choice! Please enter 1, 2, or 3: ";
         cin >> choice;
     }
     
     players.clear();
-    
     srand(time(nullptr));
     bool randomOrder = rand() % 2; // 0 or 1 for random order
     
@@ -90,30 +87,70 @@ void GameState::initiateGame(){
             
         case 2: // Human vs Bot
             cout << "\nSetting up Human vs Bot game..." << endl;
-            if (randomOrder) {
-                addHumanPlayer();      // Color 0
-                addComputerPlayer();   // Color 1
-                cout << "Player order: Human (Black) vs Bot (White)" << endl;
-            } else {
-                addComputerPlayer();   // Color 0
-                addHumanPlayer();      // Color 1
-                cout << "Player order: Bot (Black) vs Human (White)" << endl;
+            {
+                enumDifficulty botDifficulty = selectBotDifficulty();
+                if (randomOrder) {
+                    addHumanPlayer();
+                    addComputerPlayer(botDifficulty);
+                    cout << "Player order: Human (Black) vs Bot (White) - ";
+                    cout << endl;
+                } else {
+                    addComputerPlayer(botDifficulty);
+                    addHumanPlayer();
+                    cout << "Player order: Bot (Black) vs Human (White) - ";
+                    cout << endl;
+                }
             }
             break;
             
         case 3: // Bot vs Bot
             cout << "\nSetting up Bot vs Bot game..." << endl;
-            addComputerPlayer();
-            addComputerPlayer(); 
+            {
+                cout << "Select difficulty for Bot 1 (Black):" << endl;
+                enumDifficulty bot1Difficulty = selectBotDifficulty();
+                
+                cout << "Select difficulty for Bot 2 (White):" << endl;
+                enumDifficulty bot2Difficulty = selectBotDifficulty();
+                
+                addComputerPlayer(bot1Difficulty);
+                addComputerPlayer(bot2Difficulty);
+                
+                cout << "Player order: Bot 1 (Black) - ";
+                cout << " vs Bot 2 (White) - ";
+                cout << endl;
+            }
             break;
     }
+    
     board->resetBoard();
     cout << "\nGame setup complete!" << endl;
     cout << "Black pieces (●) move first, White pieces (○) move second." << endl;
     cout << "Press Enter to start the game...";
-    cin.ignore(); // Clear input buffer
-    cin.get();    // Wait for Enter key
+    cin.ignore();
+    cin.get();
+}
+
+enumDifficulty GameState::selectBotDifficulty() {
+    cout << "Choose bot difficulty:" << endl;
+    cout << "1. Easy" << endl;
+    cout << "2. Medium" << endl;
+    cout << "3. Hard" << endl;
+    cout << "Enter your choice (1-3): ";
     
+    int difficultyChoice;
+    cin >> difficultyChoice;
+    
+    while (difficultyChoice < 1 || difficultyChoice > 3) {
+        cout << "Invalid choice! Please enter 1, 2, or 3: ";
+        cin >> difficultyChoice;
+    }
+    
+    switch (difficultyChoice) {
+        case 1: return easy;
+        case 2: return medium;
+        case 3: return hard;
+        default: return easy; // fallback
+    }
 }
 
 void GameState::runGame(){
