@@ -16,7 +16,7 @@ struct MinimaxResult {
  * @param gameState Pointer to the current game state
  * @return Heuristic score for the current player
  */
-int compute_heuristic(GameState* gameState);
+int compute_heuristic(GameState* gameState, int originalColor);
 
 /**
  * Minimax algorithm with alpha-beta pruning
@@ -27,6 +27,6 @@ int compute_heuristic(GameState* gameState);
  * @param gamestate Pointer to the current game state
  * @return MinimaxResult containing the best value and move
  */
-MinimaxResult minimax(int depth, bool maximizingPlayer, int alpha, int beta, GameState* gamestate);
+MinimaxResult minimax(int depth, bool maximizingPlayer, int alpha, int beta, GameState* gamestate, int originalColor);
 
 #endif // MINIMAX_H

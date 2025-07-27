@@ -11,7 +11,7 @@ piecePosition BotPlayer::pickAction(GameState* gamestate){
         GreedyResult chosenMove=greedyAlgo(gamestate);
         return chosenMove.bestMove;
     }else{
-        MinimaxResult chosenMove=minimax(0, true, MAX, MIN, gamestate);
+        MinimaxResult chosenMove=minimax(0, true, MIN, MAX, gamestate, gamestate->getCurrentPlayer());
         return chosenMove.bestMove;
     }
 }
