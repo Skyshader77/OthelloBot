@@ -33,4 +33,6 @@ MinimaxResult minimax(int depth, bool maximizingPlayer, int alpha, int beta,
 
 MinimaxResult iterativeDeepeningSearch(GameState* gamestate, int maxDepth, 
                                      int originalColor, int timeLimit = 0);
+
+MinimaxResult minimaxSimple(int depth, bool maximizingPlayer, int alpha, int beta, GameState* gamestate, int originalColor);                                    
 #endif // MINIMAX_H

@@ -50,8 +50,7 @@ MinimaxResult minimax(int depth, bool maximizingPlayer, int alpha, int beta,
         result.value = compute_heuristic(gamestate, originalColor);
         result.hasBestMove = false;
         
-        tt.store(hash, depth, result.value, piecePosition(), 
-                TTEntry::EXACT, false);
+        tt.store(hash, depth, result.value, piecePosition(), false);
         return result;
     }
     
@@ -100,13 +99,8 @@ MinimaxResult minimax(int depth, bool maximizingPlayer, int alpha, int beta,
             alpha = max(alpha, best);
             
             if (beta <= alpha) {
-                nodeType = TTEntry::LOWER_BOUND;
                 break;
             }
-        }
-        
-        if (best > alpha) {
-            nodeType = TTEntry::EXACT;
         }
         
         finalResult.value = best;
@@ -140,22 +134,17 @@ MinimaxResult minimax(int depth, bool maximizingPlayer, int alpha, int beta,
             beta = min(beta, best);
             
             if (beta <= alpha) {
-                nodeType = TTEntry::LOWER_BOUND;
                 break;
             }
         }
         
-        if (best < beta) {
-            nodeType = TTEntry::EXACT;
-        }
         
         finalResult.value = best;
         finalResult.bestMove = bestMove;
         finalResult.hasBestMove = foundMove;
     }
     
-    tt.store(hash, depth, finalResult.value, finalResult.bestMove, 
-             nodeType, finalResult.hasBestMove);
+    tt.store(hash, depth, finalResult.value, finalResult.bestMove, finalResult.hasBestMove);
     
     return finalResult;
 }
@@ -210,4 +199,81 @@ MinimaxResult iterativeDeepeningSearch(GameState* gamestate, int maxDepth,
     cout << "Search completed in " << totalTime << " ms" << endl;
     
     return bestResult;
+}
+
+MinimaxResult minimaxSimple(int depth, bool maximizingPlayer, int alpha, int beta, GameState* gamestate, int originalColor) {
+    if (depth == MAX_DEPTH || gamestate->isGameOver()) {
+        MinimaxResult result;
+        result.value = compute_heuristic(gamestate, originalColor);
+        result.hasBestMove = false;
+        return result;
+    }
+    
+    vector<piecePosition> listPossibleMoves = gamestate->getBoard()->getEmptySpaces();
+    if (maximizingPlayer) {
+        int best = MIN;
+        piecePosition bestMove;
+        bool foundMove = false;
+        
+        for (auto move = listPossibleMoves.begin(); move != listPossibleMoves.end(); ++move) {
+            piecePosition newmove = *move;
+            newmove.ncolor = gamestate->getCurrentPlayer();
+            GameState newGameState = gamestate->deepCopy();
+            newGameState.changeCurrentPlayer();
+            newGameState.getBoard()->updateBoard(newmove);
+            
+            MinimaxResult result = minimaxSimple(depth + 1, false, alpha, beta, &newGameState, originalColor);
+            
+            if (result.value > best) {
+                best = result.value;
+                bestMove = newmove;
+                foundMove = true;
+            }
+            
+            alpha = max(alpha, best);
+            
+            // Alpha Beta Pruning
+            if (beta <= alpha)
+                break;
+        }
+        
+        MinimaxResult finalResult;
+        finalResult.value = best;
+        finalResult.bestMove = bestMove;
+        finalResult.hasBestMove = foundMove;
+        return finalResult;
+    }
+    else {
+        int best = MAX;
+        piecePosition bestMove;
+        bool foundMove = false;
+        
+        for (auto move = listPossibleMoves.begin(); move != listPossibleMoves.end(); ++move) {
+            piecePosition newmove = *move;
+            newmove.ncolor = gamestate->getCurrentPlayer();
+            GameState newGameState = gamestate->deepCopy();
+            newGameState.changeCurrentPlayer();
+            newGameState.getBoard()->updateBoard(newmove);
+            
+            MinimaxResult result = minimaxSimple(depth + 1, true, alpha, beta, &newGameState, originalColor);
+            
+            if (result.value < best) {
+                best = result.value;
+                bestMove = newmove;
+                foundMove = true;
+            }
+            
+            beta = min(beta, best);
+            
+            if (beta <= alpha)
+                break;
+        }
+        
+        MinimaxResult finalResult;
+        finalResult.value = best;
+        finalResult.bestMove = bestMove;
+        finalResult.hasBestMove = foundMove;
+
+        return finalResult;
+    }
 }

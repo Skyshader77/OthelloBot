@@ -11,4 +11,4 @@ int MAX = 1000;
 int MIN = -1000;
 int MAX_DEPTH = 6;
 int TIME_LIMIT=60000;
-int MAX_DEPTH_HARD=8;
+int MAX_DEPTH_HARD=7;

@@ -30,14 +30,14 @@ uint64_t ZobristHash::computeHash(GameState* gameState) {
         // Hash white pieces
         for (int square = 0; square < BOARD_SIZE; ++square) {
             if (whitePieces & (1ULL << square)) {
-                hash ^= pieceKeys[square][0]; // 0 for white
+                hash ^= pieceKeys[square][nWhite]; // 0 for white
             }
         }
         
         // Hash black pieces
         for (int square = 0; square < BOARD_SIZE; ++square) {
             if (blackPieces & (1ULL << square)) {
-                hash ^= pieceKeys[square][1]; // 1 for black
+                hash ^= pieceKeys[square][nBlack]; // 1 for black
             }
         }
         
