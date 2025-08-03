@@ -10,10 +10,9 @@ struct TTEntry {
     int depth;              
     int value;               
     piecePosition bestMove;  
-    enum NodeType { EXACT, LOWER_BOUND, UPPER_BOUND } nodeType;
     bool hasBestMove;
     
-    TTEntry() : hash(0), depth(-1), value(0), nodeType(EXACT), hasBestMove(false) {}
+    TTEntry() : hash(0), depth(-1), value(0), hasBestMove(false) {}
 };
 
 #endif

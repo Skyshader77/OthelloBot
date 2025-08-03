@@ -35,7 +35,6 @@ int compute_heuristic(GameState* gameState, int originalColor){
 MinimaxResult minimax(int depth, bool maximizingPlayer, int alpha, int beta, 
                      GameState* gamestate, int originalColor, uint64_t hash) {
     
-    // Check transposition table first
     TTEntry ttEntry;
     if (tt.probe(hash, depth, alpha, beta, ttEntry)) {
         MinimaxResult result;
@@ -70,7 +69,6 @@ MinimaxResult minimax(int depth, bool maximizingPlayer, int alpha, int beta,
     }
     
     MinimaxResult finalResult;
-    TTEntry::NodeType nodeType = TTEntry::UPPER_BOUND;
     
     if (maximizingPlayer) {
         int best = MIN;
@@ -186,11 +184,6 @@ MinimaxResult iterativeDeepeningSearch(GameState* gamestate, int maxDepth,
                  << result.value << endl;
         }
         
-        // If we found a winning/losing position, no need to search deeper
-        if (abs(result.value) > MAX) {
-            cout << "Terminal position found at depth " << depth << endl;
-            break;
-        }
     }
     
     auto endTime = chrono::high_resolution_clock::now();
