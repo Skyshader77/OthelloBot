@@ -1,6 +1,6 @@
 #include "Constants.h"
 
-int BOARD_SIZE = 8;
+int BOARD_LENGTH = 8;
 int NUMB_COLORS = 2;
 string WHITE = "W ";
 string BLACK = "B ";
@@ -10,3 +10,5 @@ int DIRECTIONS[8][2] = {{-1,-1}, {-1,0}, {-1,1}, {0,-1}, {0,1}, {1,-1}, {1,0}, {
 int MAX = 1000;
 int MIN = -1000;
 int MAX_DEPTH = 6;
+int TIME_LIMIT=60000;
+int MAX_DEPTH_HARD=8;

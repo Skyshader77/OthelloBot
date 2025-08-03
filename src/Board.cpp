@@ -16,8 +16,8 @@ uint64_t Board::resetBoard() {
     // Set initial Othello position
     // Center 4 squares: D4(White), E4(Black), D5(Black), E5(White)
     // Coordinates are 0-indexed: D4 = (3,3), E4 = (4,3), D5 = (3,4), E5 = (4,4)
-    pieceBB[nWhite] = (1ULL << (3 * BOARD_SIZE + 3)) | (1ULL << (4 * BOARD_SIZE + 4)); // D4, E5
-    pieceBB[nBlack] = (1ULL << (3 * BOARD_SIZE + 4)) | (1ULL << (4 * BOARD_SIZE + 3)); // E4, D5
+    pieceBB[nWhite] = (1ULL << (3 * BOARD_LENGTH + 3)) | (1ULL << (4 * BOARD_LENGTH + 4)); // D4, E5
+    pieceBB[nBlack] = (1ULL << (3 * BOARD_LENGTH + 4)) | (1ULL << (4 * BOARD_LENGTH + 3)); // E4, D5
     
     return pieceBB[nWhite] | pieceBB[nBlack];
 }
@@ -27,8 +27,8 @@ uint64_t Board::getAllPieces() const {
 }
 
 bool Board::isOutOfRange(piecePosition pos) {
-    if(pos.xCoord < 0 || pos.xCoord >= BOARD_SIZE ||
-       pos.yCoord < 0 || pos.yCoord >= BOARD_SIZE) {
+    if(pos.xCoord < 0 || pos.xCoord >= BOARD_LENGTH ||
+       pos.yCoord < 0 || pos.yCoord >= BOARD_LENGTH) {
         return true;
     }
     return false;
@@ -38,9 +38,9 @@ vector<piecePosition> Board::getEmptySpaces() const {
     vector<piecePosition> emptySpaces;
     uint64_t occupiedSquares = getAllPieces();
     
-    for(int y = 0; y < BOARD_SIZE; y++) {
-        for(int x = 0; x < BOARD_SIZE; x++) {
-            int square = y * BOARD_SIZE + x;
+    for(int y = 0; y < BOARD_LENGTH; y++) {
+        for(int x = 0; x < BOARD_LENGTH; x++) {
+            int square = y * BOARD_LENGTH + x;
             uint64_t squareMask = 1ULL << square;
             
             if(!(occupiedSquares & squareMask)) {
@@ -66,7 +66,7 @@ void Board::updateBoard(piecePosition newPiecePosition) {
         return;
     }
     
-    int square = newPiecePosition.yCoord * BOARD_SIZE + newPiecePosition.xCoord;
+    int square = newPiecePosition.yCoord * BOARD_LENGTH + newPiecePosition.xCoord;
     if (square < 0 || square >= 64) {  // assuming 8x8 board
         cout << "ERROR: Invalid square " << square << endl;
         return;
@@ -97,7 +97,7 @@ void Board::updateBoard(piecePosition newPiecePosition) {
     }
     if (!capturedPieces.empty()) {
         for (const pair<int, int>& piece : capturedPieces) {
-            int captureSquare = piece.second * BOARD_SIZE + piece.first;
+            int captureSquare = piece.second * BOARD_LENGTH + piece.first;
             if (captureSquare >= 0 && captureSquare < 64) {
                 uint64_t pieceMask = 1ULL << captureSquare;
                 pieceBB[1 - newPiecePosition.ncolor] &= ~pieceMask;
@@ -115,7 +115,7 @@ bool Board::isSquareOccupied(piecePosition pos) {
     if (isOutOfRange(pos)){
         return false;
     }
-    int square = pos.yCoord * BOARD_SIZE + pos.xCoord;
+    int square = pos.yCoord * BOARD_LENGTH + pos.xCoord;
     uint64_t squareMask = 1ULL << square;
     
     return (pieceBB[nWhite] | pieceBB[nBlack]) & squareMask;
@@ -125,7 +125,7 @@ bool Board::hasAlly(piecePosition pos, int ncolor) {
     if (isOutOfRange(pos)){
         return false;
     }
-    int square = pos.yCoord * BOARD_SIZE + pos.xCoord;
+    int square = pos.yCoord * BOARD_LENGTH + pos.xCoord;
     uint64_t squareMask = 1ULL << square;
     
     return (pieceBB[ncolor]) & squareMask;
@@ -137,23 +137,23 @@ bool Board::isFull() const {
 
 void Board::printBoard() const {
     cout << "\n    ";
-    for(int x = 0; x < BOARD_SIZE; x++) {
+    for(int x = 0; x < BOARD_LENGTH; x++) {
         cout << "  " << char('A' + x) << " ";
     }
     cout << "\n";
     
     cout << "    ┌";
-    for(int x = 0; x < BOARD_SIZE; x++) {
+    for(int x = 0; x < BOARD_LENGTH; x++) {
         cout << "───";
-        if(x < BOARD_SIZE - 1) cout << "┬";
+        if(x < BOARD_LENGTH - 1) cout << "┬";
     }
     cout << "┐\n";
     
-    for(int y = 0; y < BOARD_SIZE; y++) {
+    for(int y = 0; y < BOARD_LENGTH; y++) {
         cout << " " << (y + 1) << "  │";
         
-        for(int x = 0; x < BOARD_SIZE; x++) {
-            int square = y * BOARD_SIZE + x;
+        for(int x = 0; x < BOARD_LENGTH; x++) {
+            int square = y * BOARD_LENGTH + x;
             uint64_t mask = 1ULL << square;
             
             cout << " ";
@@ -168,25 +168,25 @@ void Board::printBoard() const {
         }
         cout << " " << (y + 1) << "\n";
         
-        if(y < BOARD_SIZE - 1) {
+        if(y < BOARD_LENGTH - 1) {
             cout << "    ├";
-            for(int x = 0; x < BOARD_SIZE; x++) {
+            for(int x = 0; x < BOARD_LENGTH; x++) {
                 cout << "───";
-                if(x < BOARD_SIZE - 1) cout << "┼";
+                if(x < BOARD_LENGTH - 1) cout << "┼";
             }
             cout << "┤\n";
         }
     }
     
     cout << "    └";
-    for(int x = 0; x < BOARD_SIZE; x++) {
+    for(int x = 0; x < BOARD_LENGTH; x++) {
         cout << "───";
-        if(x < BOARD_SIZE - 1) cout << "┴";
+        if(x < BOARD_LENGTH - 1) cout << "┴";
     }
     cout << "┘\n";
     
     cout << "    ";
-    for(int x = 0; x < BOARD_SIZE; x++) {
+    for(int x = 0; x < BOARD_LENGTH; x++) {
         cout << "  " << char('A' + x) << " ";
     }
     cout << "\n\n";

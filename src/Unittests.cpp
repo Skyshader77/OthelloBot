@@ -65,8 +65,8 @@ int main()
         // Test positions outside board boundaries
         piecePosition outOfRange1 = {-1, 0, nWhite};
         piecePosition outOfRange2 = {0, -1, nWhite};
-        piecePosition outOfRange3 = {BOARD_SIZE, 0, nWhite};
-        piecePosition outOfRange4 = {0, BOARD_SIZE, nWhite};
+        piecePosition outOfRange3 = {BOARD_LENGTH, 0, nWhite};
+        piecePosition outOfRange4 = {0, BOARD_LENGTH, nWhite};
         piecePosition validPos = {0, 0, nWhite};
         
         assert(board.isOutOfRange(outOfRange1), "Error: negative X position should be out of range");
@@ -224,7 +224,7 @@ int main()
         assert(output.find("Legend") != string::npos, "Error: display should contain a legend");
         
         // Check for column labels A-H
-        for(char c = 'A'; c < 'A' + BOARD_SIZE; c++) {
+        for(char c = 'A'; c < 'A' + BOARD_LENGTH; c++) {
             assert(output.find(c) != string::npos, "Error: display should contain column labels");
         }
     });
@@ -234,7 +234,7 @@ int main()
         board.resetBoard();
         // Test moves in corners
         piecePosition corner1 = {0, 0, nWhite};
-        piecePosition corner2 = {BOARD_SIZE-1, BOARD_SIZE-1, nBlack};
+        piecePosition corner2 = {BOARD_LENGTH-1, BOARD_LENGTH-1, nBlack};
         
         // These should be invalid positions initially (no captures possible)
         assert(board.isInValidPosition(corner1) || !board.hasAlly(corner1, nWhite), 
@@ -289,9 +289,9 @@ int main()
         
         for(const auto& pos : emptySpaces) {
             if(pos.xCoord == 0 && pos.yCoord == 0) foundTopLeft = true;
-            if(pos.xCoord == BOARD_SIZE-1 && pos.yCoord == 0) foundTopRight = true;
-            if(pos.xCoord == 0 && pos.yCoord == BOARD_SIZE-1) foundBottomLeft = true;
-            if(pos.xCoord == BOARD_SIZE-1 && pos.yCoord == BOARD_SIZE-1) foundBottomRight = true;
+            if(pos.xCoord == BOARD_LENGTH-1 && pos.yCoord == 0) foundTopRight = true;
+            if(pos.xCoord == 0 && pos.yCoord == BOARD_LENGTH-1) foundBottomLeft = true;
+            if(pos.xCoord == BOARD_LENGTH-1 && pos.yCoord == BOARD_LENGTH-1) foundBottomRight = true;
         }
         
         assert(foundTopLeft, "Error: top-left corner should be empty initially");
@@ -333,9 +333,9 @@ int main()
         // Verify all coordinates are within valid bounds
         for(const auto& pos : emptySpaces) {
             assert(pos.xCoord >= 0, "Error: x coordinate should be >= 0");
-            assert(pos.xCoord < BOARD_SIZE, "Error: x coordinate should be < BOARD_SIZE");
+            assert(pos.xCoord < BOARD_LENGTH, "Error: x coordinate should be < BOARD_SIZE");
             assert(pos.yCoord >= 0, "Error: y coordinate should be >= 0");
-            assert(pos.yCoord < BOARD_SIZE, "Error: y coordinate should be < BOARD_SIZE");
+            assert(pos.yCoord < BOARD_LENGTH, "Error: y coordinate should be < BOARD_SIZE");
         }
     });
 

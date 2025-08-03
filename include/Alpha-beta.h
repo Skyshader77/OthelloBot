@@ -27,6 +27,10 @@ int compute_heuristic(GameState* gameState, int originalColor);
  * @param gamestate Pointer to the current game state
  * @return MinimaxResult containing the best value and move
  */
-MinimaxResult minimax(int depth, bool maximizingPlayer, int alpha, int beta, GameState* gamestate, int originalColor);
+MinimaxResult minimax(int depth, bool maximizingPlayer, int alpha, int beta, 
+                     GameState* gamestate, int originalColor, uint64_t hash); 
 
+
+MinimaxResult iterativeDeepeningSearch(GameState* gamestate, int maxDepth, 
+                                     int originalColor, int timeLimit = 0);
 #endif // MINIMAX_H

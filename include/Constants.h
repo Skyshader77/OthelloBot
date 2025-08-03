@@ -5,7 +5,7 @@
 
 using namespace std;
 
-extern int BOARD_SIZE;
+extern int BOARD_LENGTH;
 extern int NUMB_COLORS;
 extern string WHITE;
 extern string BLACK;
@@ -15,6 +15,8 @@ extern int DIRECTIONS[8][2];
 extern int MAX;
 extern int MIN;
 extern int MAX_DEPTH;
+extern int TIME_LIMIT;
+extern int MAX_DEPTH_HARD;
 
 enum enumPiece
 {

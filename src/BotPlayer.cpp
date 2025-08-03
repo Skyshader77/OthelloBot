@@ -10,8 +10,11 @@ piecePosition BotPlayer::pickAction(GameState* gamestate){
     if (level==easy){
         GreedyResult chosenMove=greedyAlgo(gamestate);
         return chosenMove.bestMove;
-    }else{
-        MinimaxResult chosenMove=minimax(0, true, MIN, MAX, gamestate, gamestate->getCurrentPlayer());
+    }else if (level==medium){
+        MinimaxResult chosenMove=iterativeDeepeningSearch(gamestate, MAX_DEPTH, gamestate->getCurrentPlayer());
+        return chosenMove.bestMove;
+    } else{
+        MinimaxResult chosenMove=iterativeDeepeningSearch(gamestate, MAX_DEPTH_HARD, gamestate->getCurrentPlayer(),TIME_LIMIT);
         return chosenMove.bestMove;
     }
 }
