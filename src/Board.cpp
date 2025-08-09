@@ -3,6 +3,8 @@
 #include <iostream>
 using namespace std;
 #include <iostream>
+#include <algorithm>
+#include <set>
 
 Board::Board() {
 
@@ -54,6 +56,98 @@ vector<piecePosition> Board::getEmptySpaces() const {
     }
     
     return emptySpaces;
+}
+
+vector<piecePosition> Board::getEmptySpacesSortedByEdgeProximity() const {
+    vector<piecePosition> emptySpaces = getEmptySpaces();
+    
+    sort(emptySpaces.begin(), emptySpaces.end(), [](const piecePosition& a, const piecePosition& b) {
+        int distA = min({a.xCoord, a.yCoord, BOARD_LENGTH - 1 - a.xCoord, BOARD_LENGTH - 1 - a.yCoord});
+        
+        int distB = min({b.xCoord, b.yCoord, BOARD_LENGTH - 1 - b.xCoord, BOARD_LENGTH - 1 - b.yCoord});
+        
+        if (distA == distB) {
+            if (a.yCoord == b.yCoord) {
+                return a.xCoord < b.xCoord;
+            }
+            return a.yCoord < b.yCoord;
+        }
+        
+        return distA < distB;
+    });
+    
+    return emptySpaces;
+}
+
+vector<piecePosition> Board::getCornerEmptySpaces() const {
+    vector<piecePosition> cornerSpaces;
+    uint64_t occupiedSquares = getAllPieces();
+    
+    for (const auto& corner : CORNERS) {
+        int x = corner.first;
+        int y = corner.second;
+        int square = y * BOARD_LENGTH + x;
+        uint64_t squareMask = 1ULL << square;
+        
+        if (!(occupiedSquares & squareMask)) {
+            piecePosition emptyCorner;
+            emptyCorner.xCoord = x;
+            emptyCorner.yCoord = y;
+            emptyCorner.ncolor = -1; 
+            cornerSpaces.push_back(emptyCorner);
+        }
+    }
+    
+    return cornerSpaces;
+}
+
+int Board::getPieceColorAt(int x, int y) const {    
+    int square = y * BOARD_LENGTH + x;
+    uint64_t squareMask = 1ULL << square;
+    
+    if (getBlackPieces() & squareMask) {
+        return  nBlack;
+    } else if (getWhitePieces() & squareMask) {
+        return  nWhite;
+    }
+    
+    return -1;
+}
+
+std::vector<piecePosition> Board::getEmptyTilesOrthogonalToSameColorCorners(int playerColor) const {
+    std::vector<piecePosition> adjacentEmptyTiles;
+    std::set<std::pair<int, int>> addedPositions;
+    uint64_t occupiedSquares = getAllPieces();
+    
+    for (const auto& [cornerX, cornerY] : CORNERS) {
+        int cornerSquare = cornerY * BOARD_LENGTH + cornerX;
+        uint64_t cornerMask = 1ULL << cornerSquare;
+        
+        if (!(occupiedSquares & cornerMask) || 
+            getPieceColorAt(cornerX, cornerY) != playerColor) {
+            continue;
+        }
+        
+        for (const auto& [dx, dy] : ORTHOGONAL_OFFSETS) {
+            int adjX = cornerX + dx;
+            int adjY = cornerY + dy;
+            
+            if (adjX >= 0 && adjX < BOARD_LENGTH && 
+                adjY >= 0 && adjY < BOARD_LENGTH) {
+                
+                int adjSquare = adjY * BOARD_LENGTH + adjX;
+                uint64_t adjMask = 1ULL << adjSquare;
+                
+                if (!(occupiedSquares & adjMask) && 
+                    addedPositions.insert({adjX, adjY}).second) {
+                    
+                    adjacentEmptyTiles.push_back({adjX, adjY, playerColor});
+                }
+            }
+        }
+    }
+    
+    return adjacentEmptyTiles;
 }
 
 void Board::updateBoard(piecePosition newPiecePosition) {

@@ -1,4 +1,5 @@
 #include "Constants.h"
+#include <vector>
 
 int BOARD_LENGTH = 8;
 int NUMB_COLORS = 2;
@@ -12,3 +13,18 @@ int MIN = -1000;
 int MAX_DEPTH = 6;
 int TIME_LIMIT=60000;
 int MAX_DEPTH_HARD=7;
+int CORNER_VALUE=99;
+
+vector<pair<int, int>> CORNERS = {
+        {0, 0},                              
+        {BOARD_LENGTH - 1, 0},              
+        {0, BOARD_LENGTH - 1},               
+        {BOARD_LENGTH - 1, BOARD_LENGTH - 1}
+};
+
+vector<pair<int, int>> ORTHOGONAL_OFFSETS = {
+                    {-1, 0}, 
+                    {1, 0},   
+                    {0, -1},  
+                    {0, 1}    
+};

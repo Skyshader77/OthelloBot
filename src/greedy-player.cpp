@@ -32,7 +32,7 @@ GreedyResult greedyAlgo(GameState* gamestate) {
         return result;
     }
     
-    vector<piecePosition> listPossibleMoves = gamestate->getBoard()->getEmptySpaces();
+    vector<piecePosition> listPossibleMoves = gamestate->getBoard()->getEmptySpacesSortedByEdgeProximity();
     
     int best = MIN;
     piecePosition bestMove;    

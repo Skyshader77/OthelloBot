@@ -17,10 +17,15 @@ public:
    bool isSquareOccupied(piecePosition newPiecePosition);
    bool isOutOfRange(piecePosition pos);
    bool hasAlly(piecePosition pos, int ncolor);
+   int getPieceColorAt(int x, int y) const;
+   vector<piecePosition> getCornerEmptySpaces() const;
+   vector<piecePosition> getEmptyTilesOrthogonalToSameColorCorners(int playerColor) const;
    bool isFull() const;
    uint64_t resetBoard();
    void updateBoard(piecePosition newPiecePosition);
    void printBoard() const;
+   vector<piecePosition> getEmptySpacesSortedByEdgeProximity() const;
+   int getSpacePriority(const piecePosition& pos) const;
 private:
    uint64_t pieceBB[8];
 };

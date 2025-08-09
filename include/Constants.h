@@ -2,7 +2,8 @@
 #define CONSTANTS_H
 #include <cstdint>
 #include <string>
-
+#include <vector>
+#include <utility>
 using namespace std;
 
 extern int BOARD_LENGTH;
@@ -17,7 +18,9 @@ extern int MIN;
 extern int MAX_DEPTH;
 extern int TIME_LIMIT;
 extern int MAX_DEPTH_HARD;
-
+extern int CORNER_VALUE;
+extern vector<pair<int, int>> CORNERS;
+extern vector<pair<int, int>> ORTHOGONAL_OFFSETS;
 enum enumPiece
 {
     nWhite,
@@ -31,7 +34,11 @@ enum enumDifficulty
     hard,
 };
 
-// Constants for minimax algorithm
-
+enum SpaceType {
+    CORNER_SPACES,
+    EDGE_SPACES, 
+    CENTER_SPACES,
+    ALL_SPACES
+};
 
 #endif

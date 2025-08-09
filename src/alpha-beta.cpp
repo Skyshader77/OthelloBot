@@ -53,7 +53,7 @@ MinimaxResult minimax(int depth, bool maximizingPlayer, int alpha, int beta,
         return result;
     }
     
-    vector<piecePosition> listPossibleMoves = gamestate->getBoard()->getEmptySpaces();
+    vector<piecePosition> listPossibleMoves = gamestate->getBoard()->getEmptySpacesSortedByEdgeProximity();
     
     // Move ordering: try the best move from transposition table first
     piecePosition ttBestMove = tt.getBestMove(hash);
@@ -202,7 +202,7 @@ MinimaxResult minimaxSimple(int depth, bool maximizingPlayer, int alpha, int bet
         return result;
     }
     
-    vector<piecePosition> listPossibleMoves = gamestate->getBoard()->getEmptySpaces();
+    vector<piecePosition> listPossibleMoves = gamestate->getBoard()->getEmptySpacesSortedByEdgeProximity();
     if (maximizingPlayer) {
         int best = MIN;
         piecePosition bestMove;
