@@ -3,8 +3,8 @@
 using namespace std;
 #include <iostream>
 #include <vector>
-#include<BotPlayer.h>
-#include<HumanPlayer.h>
+#include"BotPlayer.h"
+#include"HumanPlayer.h"
 #include "Constants.h"
 
 GameState::GameState() : currentPlayer(0) {
@@ -197,6 +197,10 @@ int GameState::getNumbBlackPieces() const{
 
 int GameState::getNumbWhitePieces() const{
     return bitcounter.countSetBits(board->getWhitePieces());
+}
+
+vector<std::shared_ptr<Player>>& GameState::getPlayers() {
+    return players;
 }
 
 void GameState::printWinner() const{

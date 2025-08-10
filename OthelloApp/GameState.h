@@ -4,10 +4,10 @@
 
 #include <string>
 using namespace std;
-#include <PiecePosition.h>
-#include <Player.h>
-#include <Board.h>
-#include <BitCounter.h>
+#include "PiecePosition.h"
+#include "Player.h"
+#include "Board.h"
+#include "BitCounter.h"
 #include <memory>
 #include <vector>
 
@@ -28,6 +28,7 @@ class GameState {
     int getCurrentPlayer() const;
     shared_ptr<Board> getBoard();
     void runGame();
+    vector<std::shared_ptr<Player>>& getPlayers();
   private:                   
     vector<shared_ptr<Player>> players;
     shared_ptr<Board> board;

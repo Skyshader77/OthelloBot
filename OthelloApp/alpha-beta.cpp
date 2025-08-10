@@ -3,11 +3,11 @@
 // https://www.geeksforgeeks.org/dsa/minimax-algorithm-in-game-theory-set-4-alpha-beta-pruning/
 #include<bits/stdc++.h>
 using namespace std;
-#include<GameState.h>
-#include<Alpha-beta.h>
-#include<ZobristHash.h>
-#include<TTentry.h>
-#include<TranspositionTable.h>
+#include"GameState.h"
+#include"Alpha-beta.h"
+#include"ZobristHash.h"
+#include"TTentry.h"
+#include"TranspositionTable.h"
 
 TranspositionTable tt(64);
 ZobristHash zobrist;

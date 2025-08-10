@@ -2,8 +2,8 @@
 #define BOARD_H
 
 #include <cstdint>
-#include <PiecePosition.h>
-#include <Constants.h>
+#include "PiecePosition.h"
+#include "Constants.h"
 #include <vector>
 class Board
 {

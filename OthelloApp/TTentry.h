@@ -2,7 +2,7 @@
 #define TTENTRY_H
 
 using namespace std;
-#include <PiecePosition.h>
+#include "PiecePosition.h"
 #include <cstdint>
 
 struct TTEntry {

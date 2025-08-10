@@ -1,6 +1,6 @@
 
-#include <PiecePosition.h>
-#include <TTentry.h>
+#include "PiecePosition.h"
+#include "TTentry.h"
 #include <vector>
 
 class TranspositionTable {

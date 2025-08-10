@@ -3,8 +3,8 @@
 // https://www.geeksforgeeks.org/dsa/minimax-algorithm-in-game-theory-set-4-alpha-beta-pruning/
 #include<bits/stdc++.h>
 using namespace std;
-#include<GameState.h>
-#include<GreedyPlayer.h>
+#include"GameState.h"
+#include"GreedyPlayer.h"
 
 // Returns optimal value for
 // current player(Initially called

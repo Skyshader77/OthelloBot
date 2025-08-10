@@ -3,8 +3,8 @@
 
 #include <string>
 using namespace std;
-#include <PiecePosition.h>
-#include <Player.h>
+#include "PiecePosition.h"
+#include "Player.h"
 
 class HumanPlayer : public Player {
 public:

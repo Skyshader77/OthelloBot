@@ -3,9 +3,9 @@
 
 #include <string>
 using namespace std;
-#include <PiecePosition.h>
-#include <Player.h>
-#include <GameState.h>
+#include "PiecePosition.h"
+#include "Player.h"
+#include "GameState.h"
 
 class BotPlayer: public Player  {
 public:

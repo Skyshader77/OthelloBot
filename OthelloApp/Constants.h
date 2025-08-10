@@ -12,6 +12,8 @@ extern string WHITE;
 extern string BLACK;
 extern string EMPTY;
 extern uint64_t FULL_BOARD;
+extern string BLACK_IMAGE;
+extern string WHITE_IMAGE;
 extern int DIRECTIONS[8][2];
 extern int MAX;
 extern int MIN;

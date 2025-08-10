@@ -3,7 +3,7 @@
 
 #include "Constants.h"
 #include "GameState.h"
-#include <PiecePosition.h>
+#include "PiecePosition.h"
 
 class ZobristHash {
 private:
