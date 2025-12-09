@@ -30,14 +30,17 @@ void OthelloWindow::newGame() {
 
 void OthelloWindow::onCellClicked(int row, int col) {
     if (!gameState.isGameOver()) {
-        piecePosition pos = {row, col};  // Try swapping these
+          // Try swapping these
 
         auto& players = gameState.getPlayers();
         if (currentPlayerIndex < players.size()) {
             auto currentPlayer = players[currentPlayerIndex];
             if (dynamic_cast<HumanPlayer*>(currentPlayer.get()) != nullptr) {
+                piecePosition pos = {row, col, currentPlayer->getColor()};
                 if (!(gameState.getBoard()->isInValidPosition(pos))) {
                     gameState.getBoard()->updateBoard(pos);
+                    statusLabel->setText(QString("Player played at (%1, %2)")
+                                             .arg(pos.xCoord).arg(pos.yCoord));
                     nextPlayer();
                     updateDisplay();
 
