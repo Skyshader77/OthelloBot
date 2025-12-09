@@ -30,13 +30,13 @@ void OthelloWindow::newGame() {
 
 void OthelloWindow::onCellClicked(int row, int col) {
     if (!gameState.isGameOver()) {
-        piecePosition pos = {col, row};
+        piecePosition pos = {row, col};  // Try swapping these
 
         auto& players = gameState.getPlayers();
         if (currentPlayerIndex < players.size()) {
             auto currentPlayer = players[currentPlayerIndex];
             if (dynamic_cast<HumanPlayer*>(currentPlayer.get()) != nullptr) {
-                if (gameState.getBoard()->isInValidPosition(pos)) {
+                if (!(gameState.getBoard()->isInValidPosition(pos))) {
                     gameState.getBoard()->updateBoard(pos);
                     nextPlayer();
                     updateDisplay();
@@ -46,6 +46,10 @@ void OthelloWindow::onCellClicked(int row, int col) {
                     } else {
                         showGameOver();
                     }
+                } else{
+                    QMessageBox::information(this, "Invalid Position",
+                                             QString("Position is invalid - x: %1, y: %2")
+                                                 .arg(pos.xCoord).arg(pos.yCoord));
                 }
             }
         }
@@ -59,7 +63,7 @@ void OthelloWindow::setupUI() {
     auto* mainLayout = new QVBoxLayout(centralWidget);
 
     auto* menuBar = this->menuBar();
-    auto* gameMenu = menuBar->addMenu("Game");
+    auto* gameMenu = menuBar->addMenu("Othello");
     gameMenu->addAction("New Game", this, &OthelloWindow::newGame);
     gameMenu->addAction("Exit", this, &QWidget::close);
 
@@ -112,7 +116,8 @@ void OthelloWindow::processBotMove() {
                 updateDisplay();
 
                 if (!gameState.isGameOver()) {
-                    botTimer->start(1000);
+                    // Only schedule another bot move if the next player is also a bot
+                    processCurrentPlayer();  // This will check if next player is bot
                 } else {
                     showGameOver();
                 }
@@ -133,8 +138,7 @@ void OthelloWindow::processCurrentPlayer() {
             } else if (dynamic_cast<BotPlayer*>(currentPlayer.get()) != nullptr) {
                 statusLabel->setText(QString("Player %1's turn (Bot thinking...)")
                                          .arg(currentPlayer->getColor() == nBlack ? "Black" : "White"));
-                botTimer->start(500);
-                processBotMove();
+                botTimer->start(500);  // Remove the processBotMove() call here
             }
         }
     }
