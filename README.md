@@ -8,22 +8,8 @@
     <img src="images/Othello_Spielbrett.jpg" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">Best-README-Template</h3>
-
-  <p align="center">
-    An awesome README template to jumpstart your projects!
-    <br />
-    <a href="https://github.com/Skyshader77/OthelloBot"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/Skyshader77/OthelloBot">View Demo</a>
-    &middot;
-    <a href="https://github.com/Skyshader77/OthelloBot">Report Bug</a>
-    &middot;
-    <a href="https://github.com/Skyshader77/OthelloBot">Request Feature</a>
-  </p>
+  <h3 align="center">Bothello</h3>
 </div>
-
 
 
 <!-- TABLE OF CONTENTS -->
@@ -74,13 +60,19 @@ https://www.geeksforgeeks.org/artificial-intelligence/alpha-beta-pruning-in-adve
 ## Getting Started
 
 ### Prerequisites
-
 GDB needs to installed on your machine.
 * gdb
   ```sh
   sudo apt-get install build-essential gdb
 
   ```
+
+
+QT Creator must be installed on your machine:
+
+```sh
+sudo apt-get -y install build-essential openssl libssl-dev libssl1.0 libgl1-mesa-dev libqt5x11extras5 '^libxcb.*-dev' libx11-xcb-dev libglu1-mesa-dev libxrender-dev libxi-dev libxkbcommon-dev libxkbcommon-x11-dev git zip unzip
+```
 
 ### Installation
 
@@ -95,7 +87,9 @@ GDB needs to installed on your machine.
 
 <!-- USAGE EXAMPLES -->
 ## Usage
-To run the application on Linux:
+
+### No UI
+To run the application without the UI on Linux (for testing bots vs bots only):
 ```sh
    make clean
    ```
@@ -109,13 +103,15 @@ To run the application on Linux:
    ```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
+### With UI
+1. Open the project in QT Creator
+2. Build and run the project.
 
 <!-- ROADMAP -->
 ## Roadmap
-
-- [ ] Add Qt interface
-- [ ] Ensure the bot can reach a Max depth of 8
+- [X] Add Qt interface
+- [X] Ensure the bot can reach a Max depth of 8
+- [ ] Add a MCSTS algorithm
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
