@@ -61,6 +61,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         Zobristhash.cpp
 
         images/Black.png images/Othello_Spielbrett.jpg images/White.png images/WhiteGlow.png
+        MCTSAlgo.cpp
+        MCTSNode.cpp
+        MCTSNode.h MCTSAlgo.h
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET OthelloApp APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

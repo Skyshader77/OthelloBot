@@ -1,5 +1,6 @@
 #include "Constants.h"
 #include <vector>
+#include <cmath>
 
 int BOARD_LENGTH = 8;
 int NUMB_COLORS = 2;
@@ -12,8 +13,12 @@ int MAX = 1000;
 int MIN = -1000;
 int MAX_DEPTH = 5;
 int TIME_LIMIT=600000;
+int TIME_LIMIT_MCSTS=10000;
 int MAX_DEPTH_HARD=8;
 int CORNER_VALUE=99;
+int DRAW_VALUE=2;
+int MAX_ITERATIONS_MCTS=50000;
+float EXPLORE_PARAMETER= sqrt(2);
 
 vector<pair<int, int>> CORNERS = {
         {0, 0},                              

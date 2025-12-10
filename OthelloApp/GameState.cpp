@@ -12,6 +12,13 @@ GameState::GameState() : currentPlayer(0) {
     bitcounter.initialize();
 }
 
+GameState::GameState(shared_ptr<Board> newBoard, int player) 
+    : currentPlayer(player) {
+    
+    board = make_shared<Board>(*newBoard);
+    bitcounter.initialize();
+}
+
 shared_ptr<Board> GameState::getBoard(){
     return board;
 }
@@ -220,4 +227,19 @@ void GameState::printWinner() const{
         cout<< "It is a tie!"<<endl;
     }
     cout << "Game over. Exiting..." << endl;
+}
+
+int GameState::getWinner() const{
+    int numbBlackPieces= bitcounter.countSetBits(board->getBlackPieces());
+    int numbWhitePieces= bitcounter.countSetBits(board->getWhitePieces());
+
+    if (numbWhitePieces> numbBlackPieces){
+        return enumPiece::nWhite;
+    }
+    else if(numbBlackPieces > numbWhitePieces){
+        return enumPiece::nBlack;
+    }
+    else{
+        return DRAW_VALUE;
+    }
 }

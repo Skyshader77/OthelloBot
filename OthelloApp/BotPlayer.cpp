@@ -1,5 +1,6 @@
 #include "BotPlayer.h"
 #include "Alpha-beta.h"
+#include "MCTSAlgo.h"
 #include "GreedyPlayer.h"
 #include <iostream>
 using namespace std;
@@ -27,14 +28,18 @@ piecePosition BotPlayer::pickAction(GameState* gamestate) {
         return adjacentToCornerAction;
     }
 
-    MinimaxResult chosenMove;
+    
     
     if (level == medium) {
+        MinimaxResult chosenMove;
         chosenMove = minimaxSimple(0, true, MIN, MAX, gamestate, currentPlayerColor);
+        return chosenMove.bestMove;
     } else {
-        chosenMove = iterativeDeepeningSearch(gamestate, MAX_DEPTH_HARD, currentPlayerColor, TIME_LIMIT);
+        BestAction bestActionMCTS= mctsSearchTimed(gamestate, MAX_ITERATIONS_MCTS, TIME_LIMIT_MCSTS);
+        return bestActionMCTS.action;
+        // chosenMove = iterativeDeepeningSearch(gamestate, MAX_DEPTH_HARD, currentPlayerColor, TIME_LIMIT);
     }
-    return chosenMove.bestMove;
+    
 }
 
 piecePosition BotPlayer::pickCornerAction(GameState* gamestate){

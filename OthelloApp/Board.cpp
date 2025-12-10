@@ -10,6 +10,11 @@ Board::Board() {
 
 }
 
+Board::Board(const Board& board){
+    for(int i = 0; i < 8; i++){
+        pieceBB[i] = board.pieceBB[i];
+    }
+}
 uint64_t Board::resetBoard() {
     for(int i = 0; i < NUMB_COLORS; i++) {
         pieceBB[i] = 0ULL;

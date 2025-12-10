@@ -9,6 +9,7 @@ class Board
 {
 public:
    Board();
+   Board(const Board& board); 
    uint64_t getWhitePieces() const {return  pieceBB[nWhite];}
    uint64_t getBlackPieces() const {return  pieceBB[nBlack];}
    uint64_t getAllPieces() const;

@@ -19,8 +19,12 @@ extern int MAX;
 extern int MIN;
 extern int MAX_DEPTH;
 extern int TIME_LIMIT;
+extern int TIME_LIMIT_MCSTS;
 extern int MAX_DEPTH_HARD;
 extern int CORNER_VALUE;
+extern int DRAW_VALUE;
+extern int MAX_ITERATIONS_MCTS;
+extern float EXPLORE_PARAMETER;
 extern vector<pair<int, int>> CORNERS;
 extern vector<pair<int, int>> ORTHOGONAL_OFFSETS;
 enum enumPiece

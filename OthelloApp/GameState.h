@@ -14,11 +14,13 @@ using namespace std;
 class GameState {
   public:
     GameState();
+    GameState(shared_ptr<Board> board, int currentPlayer);
     void addHumanPlayer();
     void addComputerPlayer(enumDifficulty cpuDifficulty);
     void initiateGame();
     void insertPiece(piecePosition newPiecePosition);
     bool isGameOver() const;
+    int getWinner() const;
     void printWinner() const;
     enumDifficulty selectBotDifficulty();
     GameState deepCopy();
