@@ -5,9 +5,8 @@
 <br />
 <div align="center">
   <a href="https://github.com/Skyshader77/OthelloBot">
-    <img src="images/Othello_Spielbrett.jpg" alt="Logo" width="80" height="80">
+    <img src="OthelloApp/images/Othello_Spielbrett.jpg" alt="Logo" width="200" height="200">
   </a>
-
   <h3 align="center">Bothello</h3>
 </div>
 
@@ -60,7 +59,7 @@ https://www.geeksforgeeks.org/artificial-intelligence/alpha-beta-pruning-in-adve
 ## Getting Started
 
 ### Prerequisites
-GDB needs to installed on your machine.
+1. GDB needs to installed on your machine.
 * gdb
   ```sh
   sudo apt-get install build-essential gdb
@@ -68,7 +67,7 @@ GDB needs to installed on your machine.
   ```
 
 
-QT Creator must be installed on your machine:
+2. QT Creator must be installed on your machine:
 
 ```sh
 sudo apt-get -y install build-essential openssl libssl-dev libssl1.0 libgl1-mesa-dev libqt5x11extras5 '^libxcb.*-dev' libx11-xcb-dev libglu1-mesa-dev libxrender-dev libxi-dev libxkbcommon-dev libxkbcommon-x11-dev git zip unzip
