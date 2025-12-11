@@ -25,6 +25,8 @@ extern int CORNER_VALUE;
 extern int DRAW_VALUE;
 extern int MAX_ITERATIONS_MCTS;
 extern float EXPLORE_PARAMETER;
+extern float DRAW_SCORE_INCREMENT;
+extern float WIN_SCORE_INCREMENT;
 extern vector<pair<int, int>> CORNERS;
 extern vector<pair<int, int>> ORTHOGONAL_OFFSETS;
 enum enumPiece
@@ -38,6 +40,7 @@ enum enumDifficulty
     easy,
     medium,
     hard,
+    veryHard,
 };
 
 enum SpaceType {

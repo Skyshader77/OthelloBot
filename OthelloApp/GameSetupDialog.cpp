@@ -32,12 +32,14 @@ GameSetupDialog::GameSetupDialog(QWidget* parent) : QDialog(parent) {
         bot1Difficulty->addItem("Easy", static_cast<int>(easy));
         bot1Difficulty->addItem("Medium", static_cast<int>(medium));
         bot1Difficulty->addItem("Hard", static_cast<int>(hard));
-        
+        bot1Difficulty->addItem("Very Hard", static_cast<int>(veryHard));
+
         bot2Difficulty = new QComboBox();
         bot2Difficulty->addItem("Easy", static_cast<int>(easy));
         bot2Difficulty->addItem("Medium", static_cast<int>(medium));
         bot2Difficulty->addItem("Hard", static_cast<int>(hard));
-        
+        bot2Difficulty->addItem("Very Hard", static_cast<int>(veryHard));
+
         layout->addWidget(new QLabel("Bot 1 (or single bot) difficulty:"));
         layout->addWidget(bot1Difficulty);
         

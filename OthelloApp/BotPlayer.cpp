@@ -28,16 +28,18 @@ piecePosition BotPlayer::pickAction(GameState* gamestate) {
         return adjacentToCornerAction;
     }
 
-    
-    
     if (level == medium) {
         MinimaxResult chosenMove;
         chosenMove = minimaxSimple(0, true, MIN, MAX, gamestate, currentPlayerColor);
         return chosenMove.bestMove;
-    } else {
+    } else if(level == hard) {
         BestAction bestActionMCTS= mctsSearchTimed(gamestate, MAX_ITERATIONS_MCTS, TIME_LIMIT_MCSTS);
         return bestActionMCTS.action;
-        // chosenMove = iterativeDeepeningSearch(gamestate, MAX_DEPTH_HARD, currentPlayerColor, TIME_LIMIT);
+        
+    } else{
+        MinimaxResult chosenMove;
+        chosenMove = iterativeDeepeningSearch(gamestate, MAX_DEPTH_HARD, currentPlayerColor, TIME_LIMIT);
+        return chosenMove.bestMove;
     }
     
 }

@@ -136,10 +136,10 @@ void MCTSNode::backpropagate(int winner){
     numbVisits_++;
     
     if(winner == DRAW_VALUE){
-        numbWins_ += 0.5;
+        numbWins_ += DRAW_SCORE_INCREMENT;
     }
     else if(winner == playerColor_){
-        numbWins_ += 1.0;
+        numbWins_ += WIN_SCORE_INCREMENT;
     }
     
     if(previousNode_ != nullptr){

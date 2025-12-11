@@ -142,13 +142,14 @@ enumDifficulty GameState::selectBotDifficulty() {
     cout << "1. Easy" << endl;
     cout << "2. Medium" << endl;
     cout << "3. Hard" << endl;
-    cout << "Enter your choice (1-3): ";
+    cout << "4. Very Hard" << endl;
+    cout << "Enter your choice (1-4): ";
     
     int difficultyChoice;
     cin >> difficultyChoice;
     
-    while (difficultyChoice < 1 || difficultyChoice > 3) {
-        cout << "Invalid choice! Please enter 1, 2, or 3: ";
+    while (difficultyChoice < 1 || difficultyChoice > 4) {
+        cout << "Invalid choice! Please enter 1, 2, 3 or 4: ";
         cin >> difficultyChoice;
     }
     
@@ -156,6 +157,7 @@ enumDifficulty GameState::selectBotDifficulty() {
         case 1: return easy;
         case 2: return medium;
         case 3: return hard;
+        case 4: return veryHard;
         default: return easy; // fallback
     }
 }
