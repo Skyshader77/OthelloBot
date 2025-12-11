@@ -18,7 +18,7 @@ public:
     MCTSNode* expand();
     MCTSNode* getBestChild();
     float computeUCBScore(MCTSNode* child);
-    int rollout(GameState* gameState);
+    int rollout();
     void backpropagate(int winner);
     void setUntriedActions(const vector<piecePosition>& actions);
     shared_ptr<Board> getState() const { return state_; }

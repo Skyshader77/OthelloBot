@@ -51,21 +51,17 @@ MCTSNode* MCTSNode::expand(){
         return nullptr;
     }
     
-    // Select ONE untried action (e.g., the first one)
     piecePosition actionToExpand = untriedActions_.back();
-    untriedActions_.pop_back();  // Remove from untried list
+    untriedActions_.pop_back();
     
     actionToExpand.ncolor = playerColor_;
     
-    // Create new state with this action
     shared_ptr<Board> newState = make_shared<Board>(*state_);
     newState->updateBoard(actionToExpand);
     
-    // Switch player
     int nextPlayerColor = (playerColor_ == enumPiece::nBlack) ? 
                           enumPiece::nWhite : enumPiece::nBlack;
     
-    // Create single child
     MCTSNode* childNode = new MCTSNode(newState, this, actionToExpand, nextPlayerColor);
     vector<piecePosition> childActions = newState->getEmptySpacesSortedByEdgeProximity();
     childNode->setUntriedActions(childActions);
@@ -76,12 +72,16 @@ MCTSNode* MCTSNode::expand(){
 }
 
 float MCTSNode::computeUCBScore(MCTSNode* child){
-    if(numbVisits_ == 0 || child->numbVisits_ == 0){
+    if(child->numbVisits_ == 0){
         return std::numeric_limits<float>::max();
     }
-    float exploitRatio = static_cast<float>(numbWins_) / numbVisits_;
+    
+    float childWinRate = static_cast<float>(child->numbWins_) / child->numbVisits_;
+    float parentWinRate = 1.0f - childWinRate;
+    
     float exploreScore = EXPLORE_PARAMETER * sqrt(log(numbVisits_) / child->numbVisits_);
-    return exploitRatio + exploreScore;
+    
+    return parentWinRate + exploreScore;
 }
 
 MCTSNode* MCTSNode::getBestChild(){
@@ -103,9 +103,15 @@ MCTSNode* MCTSNode::getBestChild(){
     return *it;
 }
 
-int MCTSNode::rollout(GameState* gameState){
-    // Create a lightweight copy for simulation
-    GameState simulationState(*gameState);
+int MCTSNode::rollout(){
+    GameState simulationState(state_, playerColor_);
+    
+    int nextPlayer = (playerColor_ == enumPiece::nBlack) ? 
+                     enumPiece::nWhite : enumPiece::nBlack;
+    
+    while(simulationState.getCurrentPlayer() != nextPlayer) {
+        simulationState.changeCurrentPlayer();
+    }
     
     while(!simulationState.isGameOver()){
         vector<piecePosition> availableMoves = 

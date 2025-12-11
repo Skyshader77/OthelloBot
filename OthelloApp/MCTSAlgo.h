@@ -5,6 +5,7 @@
 #include "Board.h"
 #include "PiecePosition.h"
 #include "GameState.h"
+#include"Logger.h"
 
 struct BestAction {
     piecePosition action;
